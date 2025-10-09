@@ -177,3 +177,4 @@ contract GovernanceRootPublisher is Ownable {
         return proposals[proposalId].id != 0;
     }
 }
+

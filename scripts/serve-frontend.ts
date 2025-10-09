@@ -40,3 +40,4 @@ server.listen(PORT, () => {
   console.log(`Frontend server running at http://localhost:${PORT}`);
   console.log('Open your browser and connect MetaMask to localhost:8545');
 });
+
