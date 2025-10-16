@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liquid Staking + Governance Demo</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -219,14 +219,9 @@
     </div>
 
     <script>
-        // Contract addresses (loaded from deployments.json)
-        const CONTRACTS = {
-            MockERC20: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-            LiquidStakingVault: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-            GovernanceRootPublisher: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
-            VoteVerifier: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-            GovernanceExecutor: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
-        };
+        // Contract addresses (loaded from deployments.json at runtime)
+        // No hardcoded fallbacks to avoid stale addresses across redeploys
+        const CONTRACTS = {};
         
         let provider, signer, contracts = {};
         
@@ -266,11 +261,18 @@
         // Load contract addresses from deployments.json
         async function loadContractAddresses() {
             try {
-                const response = await fetch('/deployments.json');
+                // cache-busting query param so browser doesn't serve stale JSON
+                const response = await fetch('/deployments.json?_=' + Date.now());
                 const deployments = await response.json();
                 Object.assign(CONTRACTS, deployments.contracts);
+                if (!CONTRACTS.MockERC20 || !CONTRACTS.LiquidStakingVault) {
+                    throw new Error('deployments.json missing addresses');
+                }
             } catch (error) {
                 console.error('Failed to load contract addresses:', error);
+                document.getElementById('status-text').textContent = 'Failed to load deployments.json';
+                document.getElementById('connection-status').className = 'status error';
+                throw error;
             }
         }
         

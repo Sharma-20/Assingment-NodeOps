@@ -76,11 +76,18 @@ npm run compile
 # Run tests
 npm test
 
-# Deploy contracts
+# Start local node (terminal 1)
+npx hardhat node
+
+# Deploy contracts (terminal 2)
 npm run deploy:local
 
-# Run demo
-npm run demo
+# Optional: Gas-instrumented demo
+npm run demo:gas
+
+# Optional: Frontend server (serve repo root)
+npm run serve:frontend
+# Then open http://localhost:3000/frontend/index.html
 ```
 
 ### Development Workflow
@@ -290,6 +297,9 @@ npm run coverage
 | Vote Casting | ~200,000 | Includes signature and proof verification |
 | Proposal Execution | ~100,000 | Includes action execution |
 
+Notes:
+- You can reproduce gas logs locally by running `npm run demo:gas` or enabling the gas reporter with `REPORT_GAS=1`.
+
 ### Gas Optimization Strategies
 
 1. **Batch Operations**: Multiple votes can be batched for efficiency
@@ -426,6 +436,9 @@ The minimal frontend (`frontend/index.html`) provides:
 - Governance voting interface
 - Real-time balance updates
 - Transaction status tracking
+
+Important:
+- The frontend loads contract addresses dynamically from `deployments.json`. Serve the repository root so `deployments.json` is reachable (e.g., `npm run serve:frontend`), then open `http://localhost:3000/frontend/index.html`. Avoid hardcoded addresses.
 
 ## 📈 Future Enhancements
 

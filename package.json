@@ -11,7 +11,9 @@
     "demo": "hardhat run scripts/demo.ts --network localhost",
     "snapshot": "hardhat run scripts/snapshot-builder.ts --network localhost",
     "signatures": "hardhat run scripts/signature-collector.ts --network localhost",
-    "relay": "hardhat run scripts/relay.ts --network localhost"
+    "relay": "hardhat run scripts/relay.ts --network localhost",
+    "serve:frontend": "ts-node scripts/serve-frontend.ts",
+    "demo:gas": "REPORT_GAS=1 hardhat run scripts/demo.ts --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
